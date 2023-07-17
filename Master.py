@@ -67,8 +67,8 @@ class App(tk.Tk):
 
         # Create Main Window
         self.resizable(False, False)
-        self.title('CST Master Tool')
-        self.iconbitmap('./theme/CST Assistant Logo.ico')
+        self.title('LX_Master Tool')
+        #self.iconbitmap('./theme/icon.ico')
         self.tk.call("source", "azure.tcl")
         self.theme = self.config['OPTIONS']['Theme']
         self.tk.call("set_theme", self.theme)
