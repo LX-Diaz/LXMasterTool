@@ -1,4 +1,4 @@
-#!C:/Users/luis.diaz-guilbee/OneDrive - AMN Healthcare, Inc/Documents/LXMasterTool/venv/Scripts/python.exe
+# encoding utf-8
 """
 Main program in my LXMasterTool toolset. Handles GUI and overall functionality and will serve as the core program to access my tools.
 Written by Luis X. Diaz
@@ -61,21 +61,22 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         # Initialize imported Classes
+        self.promptWindow = None
         self.app = None
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
         # Create Main Window
         self.resizable(False, False)
-        self.title('LX_Master Tool')
-        #self.iconbitmap('./theme/icon.ico')
+        self.title('LX Master Tool')
         self.tk.call("source", "azure.tcl")
         self.theme = self.config['OPTIONS']['Theme']
         self.tk.call("set_theme", self.theme)
 
         # Define Variables
         # =============================================
-
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
         self.letters = string.ascii_lowercase
         self.digits = string.digits
         self.alphabet = self.letters + self.digits
@@ -148,6 +149,8 @@ class App(tk.Tk):
                                       text='Copy',
                                       command=self.copyText)
 
+        self.AddButton = ttk.Button(self.text_frame, text='Add', command=self.AddTemplate)
+
         self.contextMenu = Menu(self.text_area, tearoff=0)
         self.contextMenu.add_command(label="Copy", command = self.copySelectedText)
         self.contextMenu.add_command(label="Cut", command=self.cutSelectedText)
@@ -185,7 +188,8 @@ class App(tk.Tk):
         self.CopyButton.grid(column=1, row=0, padx=3, pady=3, sticky='W')
         self.ClearButton.grid(column=2, row=0, padx=3, pady=3, sticky='W')
         self.SeparateButton.grid(column=3, row=0, padx=3, pady=3, sticky='W')
-        self.text_area.grid(column=0, row=1, columnspan=4, padx=3, pady=3)
+        self.AddButton.grid(column=4, row=0, padx=3, pady=3, sticky='W' )
+        self.text_area.grid(column=0, row=1, columnspan=5, padx=3, pady=3, sticky='EW')
 
         # Status Output
         self.status_frame.grid(column=0, row=2, columnspan=4, padx=1, pady=1, sticky='W')
@@ -224,7 +228,7 @@ class App(tk.Tk):
             self.text_area.insert('end', items + '\n')
             self.clipBoard += items + '\n'
             pc.copy(self.clipBoard)
-            self.state.set('Copied to Clipboard.')
+            self.state.set(' Passwords Copied to Clipboard.')
 
     def clearText(self):
         self.text_area.delete('1.0', 'end')
@@ -267,6 +271,37 @@ class App(tk.Tk):
         wb.open('config.ini')
 
     def RestartProgram(self):
+        self.destroy()
+        self.app = App()
+        self.app.mainloop()
+
+    def AddTemplate(self):
+        self.TemplateTitle_s = ''
+        self.TemplateText_s = ''
+        self.templateText = self.text_area.get('1.0', 'end')
+        self.promptWindow = Toplevel(self)
+        self.promptWindow.title("Template Entry")
+        self.TitleLabel = ttk.Label(self.promptWindow, text='What\'s the title?')
+        self.TemplateLabel = ttk.Label(self.promptWindow, text='Template')
+        self.TitleEntry = ttk.Entry(self.promptWindow)
+        self.TemplateContent = tk.Text(self.promptWindow)
+        self.SaveButton = ttk.Button(self.promptWindow, style="Accent.TButton", text='Save💾', command=self.SaveTemplate)
+
+        self.TitleLabel.grid(column=0, row=0, padx=2, pady=2, sticky='NW')
+        self.TitleEntry.grid(column=0, row=1, padx=2, pady=2, sticky='NW')
+        self.TemplateLabel.grid(column=0, row=2, padx=2, pady=2, sticky='NW')
+        self.TemplateContent.grid(column=0, row=3, padx=2, pady=2, sticky='NW')
+        self.SaveButton.grid(column=0, row=4, padx=2, pady=2, sticky='SE')
+
+        self.TemplateContent.insert('1.0', self.templateText)
+
+    def SaveTemplate(self):
+        self.TemplateTitle_s = self.TitleEntry.get()
+        self.TemplateText_s = self.TemplateContent.get('1.0', 'end')
+        self.config.set('TEMPLATES', self.TemplateTitle_s, self.TemplateText_s)
+        with open('config.ini','w') as configfile:
+            self.config.write(configfile)
+        self.promptWindow.destroy()
         self.destroy()
         self.app = App()
         self.app.mainloop()
