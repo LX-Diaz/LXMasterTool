@@ -4,5 +4,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Tkinter_Tests" />
+    <orderEntry type="module" module-name="Alarm System Dev" />
   </component>
 </module>

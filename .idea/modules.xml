@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Alarm System Dev/.idea/Alarm System Dev.iml" filepath="$PROJECT_DIR$/../../Alarm System Dev/.idea/Alarm System Dev.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/LXMasterTool.iml" filepath="$PROJECT_DIR$/.idea/LXMasterTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Tkinter_Tests/.idea/Tkinter_Tests.iml" filepath="$PROJECT_DIR$/../../Tkinter_Tests/.idea/Tkinter_Tests.iml" />
     </modules>
   </component>
 </project>
