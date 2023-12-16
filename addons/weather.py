@@ -5,7 +5,7 @@ import configparser
 class WeatherData():
     def __init__(self):
         self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        self.config.read('timeconfig.ini')
         self.api_key = self.config['WEATHER']['api']
         self.city = self.config['WEATHER']['city']
         self.url = f'http://api.openweathermap.org/data/2.5/weather?q={self.city}&appid={self.api_key}'
